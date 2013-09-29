@@ -1,4 +1,6 @@
 Followup::Application.routes.draw do
+  resources :dexes
+
   devise_for :users
   root "pages#home"
   get "about" => "pages#about"
