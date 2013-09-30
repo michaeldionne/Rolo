@@ -1,5 +1,7 @@
 class DexesController < ApplicationController
   before_action :set_dex, only: [:show, :edit, :update, :destroy]
+  beofre_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!
 
   def index
     @dexes = Dex.all
@@ -9,14 +11,14 @@ class DexesController < ApplicationController
   end
 
   def new
-    @dex = Dex.new
+    @dex = current_user.dexes.build
   end
 
   def edit
   end
 
   def create
-    @dex = Dex.new(dex_params)
+    @dex = current_user.dexes.build(dex_params)
     if @dex.save
       redirect_to @dex, notice: 'Dex was successfully created.'
     else
@@ -40,6 +42,11 @@ class DexesController < ApplicationController
   private
     def set_dex
       @dex = Dex.find(params[:id])
+    end
+
+    def corrent_user
+      @dex = current_user.dexes.find_by(id: (params[:id])
+      redirect_to dexes_path, notice: "Sorry, no soup for you! That wasn't your Dex." if @dex.nil
     end
 
     def dex_params

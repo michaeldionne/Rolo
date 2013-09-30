@@ -14,9 +14,11 @@
     <% @dexes.each do |dex| %>
       <tr>
         <td><%= dex.description %></td>
-        <td><%= link_to 'Show', dex %></td>
-        <td><%= link_to 'Edit', edit_dex_path(dex) %></td>
-        <td><%= link_to 'Destroy', dex, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if dex.user == current_user %>
+          <td><%= link_to 'Show', dex %></td>
+          <td><%= link_to 'Edit', edit_dex_path(dex) %></td>
+          <td><%= link_to 'Destroy', dex, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -24,4 +26,6 @@
 
 <br>
 
-<%= link_to 'New Dex', new_dex_path %>
+<% if user_signed_in? %>
+  <%= link_to 'New Dex', new_dex_path %>
+<% end %>
